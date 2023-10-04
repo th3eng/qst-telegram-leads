@@ -16,6 +16,14 @@ pattern2 = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
 # regx must be: phone number with or without + sign
 pattern3 = r"^\+?[0-9]+$"
 
+print("="*20)
+print("Thndelegram bot V0.1")
+print("="*20)
+print("This bot is used to collect leads from users and store them in a CSV file")
+print("="*20)
+print("Coded by: Ahmed Farag")
+print("="*20)
+print("Status: Running\nEnjoy!")
 # Validate the details
 def validate_details(details: str) -> bool:
     return bool(re.match(pattern, details.replace('\n\n','\n')))
@@ -61,11 +69,9 @@ async def handle_details(update: Update, context: CallbackContext) -> None:
         context.user_data['phone']=None
 
         if context.user_data.get('language') == 'Arabic':
-            # Replace with an Arabic thank you message
-            await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
-            
+            await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡\nيمكنك التواصل مع الدعم من هنا @Octopus_support_2')
         else:
-            await update.message.reply_text('Thank you for registering!🫡')
+            await update.message.reply_text('Thank you for registering!🫡\nContact the support now: @Octopus_support_2')
     
     elif bool(re.match(pattern1, update.message.text)):
         context.user_data['name']=update.message.text
@@ -79,9 +85,9 @@ async def handle_details(update: Update, context: CallbackContext) -> None:
             context.user_data['email']=None
             context.user_data['phone']=None
             if context.user_data.get('language') == 'Arabic':
-                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
+                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡\nيمكنك التواصل مع الدعم من هنا @Octopus_support_2')
             else:
-                await update.message.reply_text('Thank you for registering!🫡')
+                await update.message.reply_text('Thank you for registering!🫡\nContact the support now: @Octopus_support_2')
 
         if context.user_data.get('language') == 'Arabic':
             # Replace with an Arabic message to get email
@@ -101,9 +107,9 @@ async def handle_details(update: Update, context: CallbackContext) -> None:
             context.user_data['email']=None
             context.user_data['phone']=None
             if context.user_data.get('language') == 'Arabic':
-                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
+                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡\nيمكنك التواصل مع الدعم من هنا @Octopus_support_2')
             else:
-                await update.message.reply_text('Thank you for registering!🫡')
+                await update.message.reply_text('Thank you for registering!🫡\nContact the support now: @Octopus_support_2')
             return
 
         # the email is stored, and now send message to get phone
@@ -120,9 +126,9 @@ async def handle_details(update: Update, context: CallbackContext) -> None:
                 writer = csv.writer(file)
                 writer.writerow([context.user_data.get('name'), context.user_data.get('email'), context.user_data.get('phone')])
             if context.user_data.get('language') == 'Arabic':
-                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
+                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡\nيمكنك التواصل مع الدعم من هنا @Octopus_support_2')
             else:
-                await update.message.reply_text('Thank you for registering!🫡')
+                await update.message.reply_text('Thank you for registering!🫡\nContact the support now: @Octopus_support_2')
             
             # Updating step to end
             context.user_data['name']=None
