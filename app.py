@@ -36,6 +36,7 @@ async def handle_language(update: Update, context: CallbackContext) -> None:
     elif chosen_language == "English":
         context.user_data['language'] = 'English'
         await update.message.reply_text("Please send your details in the following format:\n\nFull name\nEmail address\nPhone number with country code")
+        
 
 # Handle the user details
 async def handle_details(update: Update, context: CallbackContext) -> None:
@@ -50,14 +51,84 @@ async def handle_details(update: Update, context: CallbackContext) -> None:
         if not bool(re.match(pattern3, details[2])):
             await update.message.reply_text('Your phone number is not correct😥\n' + details[2])
             return
+        # record the details in the CSV file
         with open(FILE_NAME, 'a', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
             writer.writerow(details)
+        # Updating step to end
+        context.user_data['name']=None
+        context.user_data['email']=None
+        context.user_data['phone']=None
+
         if context.user_data.get('language') == 'Arabic':
             # Replace with an Arabic thank you message
             await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
+            
         else:
             await update.message.reply_text('Thank you for registering!🫡')
+    
+    elif bool(re.match(pattern1, update.message.text)):
+        context.user_data['name']=update.message.text
+        if context.user_data.get('email') is not None and context.user_data.get('name') is not None and context.user_data.get('phone') is not None:
+            # store the data
+            with open(FILE_NAME, 'a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow([context.user_data.get('name'), context.user_data.get('email'), context.user_data.get('phone')])
+            # Updating step to end
+            context.user_data['name']=None
+            context.user_data['email']=None
+            context.user_data['phone']=None
+            if context.user_data.get('language') == 'Arabic':
+                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
+            else:
+                await update.message.reply_text('Thank you for registering!🫡')
+
+        if context.user_data.get('language') == 'Arabic':
+            # Replace with an Arabic message to get email
+            await update.message.reply_text('من فضلك أرسل بريدك الإلكتروني📧')
+        else:
+            await update.message.reply_text('Please send your email📧')
+    
+    elif bool(re.match(pattern2, update.message.text)):
+        context.user_data['email']=update.message.text
+        if context.user_data.get('email') is not None and context.user_data.get('name') is not None and context.user_data.get('phone') is not None:
+            # store the data
+            with open(FILE_NAME, 'a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow([context.user_data.get('name'), context.user_data.get('email'), context.user_data.get('phone')])
+            # Updating step to end
+            context.user_data['name']=None
+            context.user_data['email']=None
+            context.user_data['phone']=None
+            if context.user_data.get('language') == 'Arabic':
+                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
+            else:
+                await update.message.reply_text('Thank you for registering!🫡')
+            return
+
+        # the email is stored, and now send message to get phone
+        if context.user_data.get('language') == 'Arabic':
+            # Replace with an Arabic message to get phone
+            await update.message.reply_text('من فضلك أرسل رقم هاتفك📱')
+        else:
+            await update.message.reply_text('Please send your phone number📱')
+    elif bool(re.match(pattern3, update.message.text)):
+        context.user_data['phone']=update.message.text
+        if context.user_data.get('email') is not None and context.user_data.get('name') is not None and context.user_data.get('phone') is not None:
+            # store the data
+            with open(FILE_NAME, 'a', newline='', encoding='utf-8') as file:
+                writer = csv.writer(file)
+                writer.writerow([context.user_data.get('name'), context.user_data.get('email'), context.user_data.get('phone')])
+            if context.user_data.get('language') == 'Arabic':
+                await update.message.reply_text('شكرا لك لقد تم تسجيلك بنجاح !🫡')
+            else:
+                await update.message.reply_text('Thank you for registering!🫡')
+            
+            # Updating step to end
+            context.user_data['name']=None
+            context.user_data['email']=None
+            context.user_data['phone']=None
+    
     else:
         if context.user_data.get('language') == 'Arabic':
             # Replace with an Arabic error message
